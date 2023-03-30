@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'richat'
+
+log_dir = File.expand_path(Richat::Config.get("log", "log_dir"))
+FileUtils.mkdir_p(log_dir) unless File.directory?(log_dir)
+
+prompt_dir = File.expand_path(Richat::Config.get("prompt", "prompt_dir"))
+FileUtils.mkdir_p(prompt_dir) unless File.directory?(prompt_dir)
+
+chat_config = {
+  api_key: Richat::Config.get("chatgpt", "api_key"),
+  model: Richat::Config.get("chatgpt", "model"),
+  temperature: Richat::Config.get("chatgpt", "temperature"),
+  stream: true
+}
+
+if Richat::Config.get("log", "enable")
+  logger = Richat::Logger.new(log_file: "#{log_dir}/#{Time.now.strftime('%Y%m%d')}.md")
+else
+  logger = Richat::Logger.empty_logger
+end
+
+if ARGV.size.zero?
+  client = Openai::Chat.new(chat_config)
+  Richat::Shell.new(chat_client: client, logger: logger).call
+else
+  client = Openai::Chat.new(chat_config.merge(stream: false))
+  Richat::Cli.new(chat_client: client, logger: logger, user_content: ARGV.join(" ")).call
+end

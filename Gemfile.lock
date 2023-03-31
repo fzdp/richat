@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    richat (0.2.0)
+    richat (0.2.2)
+      faraday (~> 2.7)
 
 GEM
   remote: https://rubygems.org/

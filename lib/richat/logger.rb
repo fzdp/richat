@@ -6,7 +6,7 @@ module Richat
 
     def initialize(options = {})
       original_log_header = ::Logger::LogDevice.instance_method(:add_log_header)
-      ::Logger::LogDevice.define_method(:add_log_header) {}
+      ::Logger::LogDevice.define_method(:add_log_header) {|file|}
 
        @logger = ::Logger.new(options[:log_file])
       ::Logger::LogDevice.define_method(original_log_header.name, original_log_header)

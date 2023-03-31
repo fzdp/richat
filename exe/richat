@@ -16,6 +16,11 @@ chat_config = {
   stream: true
 }
 
+if chat_config[:api_key].nil? || chat_config[:api_key].empty?
+  puts "OpenAI API key not set, refer https://github.com/fzdp/richat#usage for more info."
+  exit
+end
+
 if Richat::Config.get("log", "enable")
   logger = Richat::Logger.new(log_file: "#{log_dir}/#{Time.now.strftime('%Y%m%d')}.md")
 else

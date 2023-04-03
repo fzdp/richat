@@ -11,7 +11,7 @@ module Richat
       @ai_role = Config.get("log", "ai_role")
       @system_role = Config.get("log", "system_role")
       @history_path = File.expand_path(Config.get("shell", "shell_history_file"))
-      File.open(@history_path, 'w') {} unless File.exists?(@history_path)
+      File.open(@history_path, 'w') {} unless File.exist?(@history_path)
     end
 
     def call

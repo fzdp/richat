@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    richat (0.2.3)
+    richat (0.2.4)
       faraday (~> 2.7)
 
 GEM
@@ -29,8 +29,8 @@ GEM
     ruby2_keywords (0.0.5)
 
 PLATFORMS
-  ruby
   arm64-darwin-21
+  ruby
   x86_64-linux
 
 DEPENDENCIES

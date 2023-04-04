@@ -123,7 +123,13 @@ module Richat
             @prompt_id = nil
             return
           end
-          File.read(File.join(File.expand_path(Config.get("prompt", "prompt_dir")), @prompt_id))
+
+          begin
+            File.read(File.join(File.expand_path(Config.get("prompt", "prompt_dir")), @prompt_id))
+          rescue => e
+            print_exception(e.message)
+            exit
+          end
         end
       end
     end

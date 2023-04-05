@@ -41,7 +41,7 @@ module Richat
                     else
                       {}
                     end
-      DEFAULT_CONFIG.deep_merge(user_config)
+      Utils.deep_merge_hash(DEFAULT_CONFIG, user_config)
     end
   end
 end

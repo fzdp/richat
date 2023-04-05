@@ -1,6 +1,6 @@
 require "richat/version"
 
-require_relative 'extension/hash'
+require_relative 'richat/utils'
 require_relative 'richat/config'
 require_relative 'richat/command'
 require_relative 'openai/chat'

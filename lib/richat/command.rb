@@ -32,7 +32,7 @@ module Richat
 
       def handle_config
         puts "\e[32mConfiguration file path is #{File.expand_path("~/.richat/config.json")}\e[0m"
-        puts JSON.pretty_generate(Config.config)
+        puts JSON.pretty_generate(Config.get_config)
         NEXT_CODE
       end
 

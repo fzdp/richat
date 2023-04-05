@@ -1,13 +1,64 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
+require 'optparse'
 require 'richat'
 
-log_dir = File.expand_path(Richat::Config.get("log", "log_dir"))
-FileUtils.mkdir_p(log_dir) unless File.directory?(log_dir)
+cli_opts = {}
+
+OptionParser.new do |opts|
+  opts.banner = %q{Usage: richat [options] [chat content]
+richat will enter shell mode if chat content is empty}
+  opts.version = Richat::VERSION
+  opts.program_name = "richat"
+
+  opts.separator "\nOptions:"
+
+  opts.on("-l", "--logfile=LOG FILE", "Set log file path") do |l|
+    cli_opts["log"] = { "log_file" => l }
+  end
+
+  opts.on_tail("-h", "--help", "Print help") do
+    puts opts
+    puts "\nFurther help: https://github.com/fzdp/richat"
+    exit
+  end
+
+  opts.on_tail("-v", "--version", "Version") do
+    puts "richat " + Richat::VERSION
+    exit
+  end
+end.parse!
+
+Richat::Config.override_with(cli_opts) unless cli_opts.empty?
+
+api_key = Richat::Config.get("chatgpt", "api_key")
+if api_key.nil? || api_key.empty?
+  puts "OpenAI API key not set, refer https://github.com/fzdp/richat#usage for more info."
+  exit
+end
+
+if Richat::Config.get("log", "enable")
+  log_dir = File.expand_path(Richat::Config.get("log", "log_dir"))
+  log_file = Richat::Config.get("log", "log_file")
+
+  if log_file.nil? || log_file.empty?
+    log_file = File.join(log_dir, "#{Time.now.strftime('%Y%m%d')}.md")
+  elsif log_file.start_with? "~/"
+    log_file = File.expand_path(log_file)
+  elsif !Richat::Utils.absolute_path?(log_file)
+    log_file = File.join(log_dir, log_file)
+  end
+
+  Richat::Utils.ensure_dir_exist(File.dirname(log_file))
+  logger = Richat::Logger.new(log_file: log_file)
+else
+  logger = Richat::Logger.empty_logger
+end
 
 prompt_dir = File.expand_path(Richat::Config.get("prompt", "prompt_dir"))
-FileUtils.mkdir_p(prompt_dir) unless File.directory?(prompt_dir)
+Richat::Utils.ensure_dir_exist(prompt_dir)
+
+user_content = ARGV.join(" ")
 
 chat_config = {
   api_key: Richat::Config.get("chatgpt", "api_key"),
@@ -16,21 +67,10 @@ chat_config = {
   stream: true
 }
 
-if chat_config[:api_key].nil? || chat_config[:api_key].empty?
-  puts "OpenAI API key not set, refer https://github.com/fzdp/richat#usage for more info."
-  exit
-end
-
-if Richat::Config.get("log", "enable")
-  logger = Richat::Logger.new(log_file: "#{log_dir}/#{Time.now.strftime('%Y%m%d')}.md")
-else
-  logger = Richat::Logger.empty_logger
-end
-
-if ARGV.size.zero?
+if user_content.empty?
   client = Openai::Chat.new(chat_config)
   Richat::Shell.new(chat_client: client, logger: logger).call
 else
   client = Openai::Chat.new(chat_config.merge(stream: false))
-  Richat::Cli.new(chat_client: client, logger: logger, user_content: ARGV.join(" ")).call
+  Richat::Cli.new(chat_client: client, logger: logger, user_content: user_content).call
 end

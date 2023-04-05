@@ -18,6 +18,16 @@ module Richat
       def absolute_path?(fp)
         File.expand_path(fp) == fp
       end
+
+      def ensure_dir_exist(*dirs)
+        dirs.each do |dir_name|
+          if dir_name.nil? || dir_name.empty?
+            puts "invalid directory"
+            exit
+          end
+          FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
+        end
+      end
     end
   end
 end

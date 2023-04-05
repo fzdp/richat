@@ -9,6 +9,7 @@ module Richat
       "log" => {
         "enable" => true,
         "log_dir" => "~/.richat/logs",
+        "log_file" => nil,
         "user_role" => "USR",
         "ai_role" => "GPT",
         "system_role" => "SYS"
@@ -28,8 +29,16 @@ module Richat
     class << self
       attr_reader :config
 
+      def get_config
+        (@config ||= merge_config)
+      end
+
       def get(*keys)
-        (@config ||= merge_config).dig(*keys)
+        get_config.dig(*keys)
+      end
+
+      def override_with(other_config)
+        @config = Utils.deep_merge_hash(get_config, other_config)
       end
     end
 

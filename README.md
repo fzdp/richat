@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/richat.svg)](https://badge.fury.io/rb/richat)
+
 # Richat
 
 ## A powerful command-line ChatGPT tool.
@@ -47,6 +49,7 @@ Configuration file path is /Users/fzdp/.richat/config.json
   "log": {
     "enable": true,
     "log_dir": "~/.richat/logs",
+    "log_file": null,
     "user_role": "USR",
     "ai_role": "GPT",
     "system_role": "SYS"
@@ -73,6 +76,27 @@ By default, Richat will log your chat history and log names are in date format.
 Set `log.enable` to false if you don't need log feature.
 
 <img width="409" alt="" src="https://user-images.githubusercontent.com/6159178/228758657-1dbbe25b-e768-403d-8b42-3b270f53fe2a.png">
+
+#### log directory path
+
+Default logs directory is `~/.richat/logs`, you can set another directory if needed.
+
+#### log file path
+
+If you need save chat logs in a single file, for example in `~/chatgpt_logs.md`, there are two ways to do this:
+
+* edit `~/.richat/config.json`
+
+```
+{
+  "log": {
+    "log_file": "~/chatgpt_logs.md"
+}
+```
+
+* through command line `richat --logfile ~/chatgpt_logs.md`
+
+If log file is not an absolute path then its parent directory is `log_dir`.
 
 ### Prompt
 

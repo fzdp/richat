@@ -1,6 +1,7 @@
-[![Gem Version](https://badge.fury.io/rb/richat.svg)](https://badge.fury.io/rb/richat)
-
 # Richat
+
+[![Gem Version](https://badge.fury.io/rb/richat.svg)](https://badge.fury.io/rb/richat)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/fzdp/richat/blob/master/LICENSE.txt)
 
 ## A powerful command-line ChatGPT tool.
 

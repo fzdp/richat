@@ -12,7 +12,7 @@ module Richat
       def call(user_input, sys_cmd_mode=false)
         user_input = user_input.strip
         return handle_system_command(user_input, sys_cmd_mode) if user_input.start_with?(*Config.get("sys_cmd", "activate_keywords"))
-        return handle_exit if user_input.start_with?(*Config.get("shell", "exit_keywords"))
+        return handle_exit if Config.get("shell", "exit_keywords").include?(user_input)
         return unless user_input.start_with?("/")
         if user_input == "/help"
           handle_help

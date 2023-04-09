@@ -189,11 +189,9 @@ You can turn it off in config file.
 
 Press `>` or any other keys defined in config file, then you will enter linux shell mode where you can run any commands.
 
-then you don't need press `>` prefix for the later commands.
-
 press `q` or other keys you defined to exit linux shell mode.
 
-<img width="649" alt="" src="https://user-images.githubusercontent.com/6159178/230761640-ea9db77f-5d0a-4e99-beba-3b804be6ae5f.png">
+<img width="872" alt="linux_terminal_example" src="https://user-images.githubusercontent.com/6159178/230764644-44331baf-0652-4f2b-aa5d-4b2b3f0ace82.png">
 
 ## Contributing
 

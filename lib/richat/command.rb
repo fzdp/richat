@@ -9,41 +9,43 @@ module Richat
     class << self
       attr_reader :prompt, :prompt_id
 
-      def call(user_input, sys_cmd_mode=false)
+      def call(user_input, sys_cmd_mode)
         user_input = user_input.strip
-        return handle_system_command(user_input, sys_cmd_mode) if user_input.start_with?(*Config.get("sys_cmd", "activate_keywords"))
-        return handle_exit if Config.get("shell", "exit_keywords").include?(user_input)
-        return unless user_input.start_with?("/")
-        if user_input == "/help"
-          handle_help
-        elsif user_input == "/config"
-          handle_config
-        elsif user_input =~ /^\/prompt\s*/
-          if user_input == "/prompt"
-            handle_prompt
-          else
-            handle_choose_prompt(user_input.split(" ").last)
+
+        if sys_cmd_mode
+          return SYS_CHAT_CODE if Config.get("sys_cmd", "deactivate_keywords").include?(user_input)
+          handle_system_command(user_input)
+        else
+          return SYS_CMD_CODE if Config.get("sys_cmd", "activate_keywords").include?(user_input)
+          return handle_exit if Config.get("shell", "exit_keywords").include?(user_input)
+          return unless user_input.start_with?("/")
+          if user_input == "/help"
+            handle_help
+          elsif user_input == "/config"
+            handle_config
+          elsif user_input =~ /^\/prompt\s*/
+            if user_input == "/prompt"
+              handle_prompt
+            else
+              handle_choose_prompt(user_input.split(" ").last)
+            end
           end
         end
       end
 
-      def handle_system_command(user_input, sys_cmd_mode)
-        Config.get("sys_cmd", "activate_keywords").each do |sub_str|
-          if user_input.start_with?(sub_str)
-            cmd = user_input[sub_str.length..-1].strip
-            return SYS_CHAT_CODE if Config.get("sys_cmd", "deactivate_keywords").include?(cmd) && sys_cmd_mode
-            if (match = /^cd\s?(.*)$/.match(cmd))
-              Dir.chdir(File.expand_path(match[1].empty? ? "~" : match[1]))
-            else
-              system(cmd)
-            end
-            if sys_cmd_mode
-              return NEXT_CODE
-            else
-              return SYS_CMD_CODE, sub_str
-            end
+      def handle_system_command(cmd)
+        if (match = /^cd\s?(.*)$/.match(cmd))
+          fp = File.expand_path(match[1].empty? ? "~" : match[1])
+          begin
+            Dir.chdir(fp)
+          rescue
+            puts "cd: no such file or directory: #{fp}"
           end
+        else
+          system(cmd)
         end
+
+        NEXT_CODE
       end
 
       def handle_exit

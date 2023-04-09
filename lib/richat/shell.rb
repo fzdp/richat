@@ -34,20 +34,17 @@ module Richat
 
       Command.print_welcome if Config.get("shell", "show_welcome_info")
       sys_cmd_mode = false
-      current_cmd_prefix = nil
 
       begin
-        while (user_content = Readline.readline(shell_prompt(sys_cmd_mode, current_cmd_prefix), true))
+        while (user_content = Readline.readline(shell_prompt(sys_cmd_mode), true))
           if user_content.empty?
             Readline::HISTORY&.pop
             next
           end
 
-          user_content = current_cmd_prefix + user_content if sys_cmd_mode
           File.open(history_path, 'a') { |f| f.puts(user_content) } if enable_full_completion
 
-          code, _ = Command.call(user_content, sys_cmd_mode)
-          if code
+          if (code = Command.call(user_content, sys_cmd_mode))
             if code == Command::NEXT_CODE
               next
             elsif code == Command::EXIT_CODE
@@ -57,7 +54,6 @@ module Richat
               next
             elsif code == Command::SYS_CMD_CODE
               sys_cmd_mode = true
-              current_cmd_prefix = _
               next
             elsif code == Command::SYS_CHAT_CODE
               sys_cmd_mode = false
@@ -98,9 +94,9 @@ module Richat
 
     private
 
-    def shell_prompt(sys_cmd_mode, current_cmd_prefix)
+    def shell_prompt(sys_cmd_mode)
       if sys_cmd_mode
-        "\e[32m#{Command.prompt_id&.+" "}\e[0m\e[33m>>\e[0m \e[32m#{current_cmd_prefix}\e[0m"
+        "\e[32m#{Command.prompt_id&.+" "}\e[0m\e[33m>>\e[0m \e[32m$ \e[0m"
       else
         "\e[32m#{Command.prompt_id&.+" "}\e[0m\e[33m>> \e[0m"
       end

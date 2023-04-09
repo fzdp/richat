@@ -20,7 +20,8 @@ module Richat
         "save_shell_history" => true,
         "enable_chat_context" => true,
         "show_welcome_info" => true,
-        "shell_history_file" => "~/.richat/history.txt"
+        "shell_history_file" => "~/.richat/history.txt",
+        "exit_keywords" => ["/exit", "q", "quit", "exit"]
       },
       "sys_cmd" => {
         "activate_keywords" => [">", "!"],

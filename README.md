@@ -5,9 +5,17 @@
 
 ## A powerful command-line ChatGPT tool.
 
-Richat is a command-line ChatGPT tool implemented in Ruby that supports highly customizable configuration. It can save chat logs, performs fuzzy searches on historical inputs, allows for prompt customization and switching at any time.
+Richat is a command-line ChatGPT tool implemented in Ruby that supports highly customizable configuration. It can save chat contents, performs fuzzy searches on historical inputs, allows for prompt switching at any time and can even run Linux commands.
 
 https://user-images.githubusercontent.com/6159178/228784846-a31772c0-53a5-4aff-92ae-2e33d9c6fad5.mov
+
+## Features
+
+* Save chat contents in markdown files
+* Switch and set prompt easily
+* Auto complete, traverse and search input history
+* Can even be used as a real Linux terminal
+* Fully configurable
 
 ## Installation
 
@@ -56,10 +64,27 @@ Configuration file path is /Users/fzdp/.richat/config.json
     "system_role": "SYS"
   },
   "shell": {
-    "save_history": true,
+    "save_shell_history": true,
     "enable_chat_context": true,
     "show_welcome_info": true,
-    "history_file": "~/.richat/shell_history.txt"
+    "shell_history_file": "~/.richat/history.txt",
+    "exit_keywords": [
+      "/exit",
+      "q",
+      "quit",
+      "exit"
+    ]
+  },
+  "sys_cmd": {
+    "activate_keywords": [
+      ">",
+      "!"
+    ],
+    "deactivate_keywords": [
+      "q",
+      "quit",
+      "exit"
+    ]
   },
   "prompt": {
     "prompt_dir": "~/.richat/prompts",
@@ -159,6 +184,16 @@ Hello! How can I assist you today?
 Chat context is enabled by default, because ChatGPT have no memory of past requests, all relevant information must be supplied via the conversation.
 
 You can turn it off in config file.
+
+### Linux terminal
+
+Press `>` or any other keys defined in config file, then you will enter linux shell mode where you can run any commands.
+
+then you don't need press `>` prefix for the later commands.
+
+press `q` or other keys you defined to exit linux shell mode.
+
+<img width="649" alt="" src="https://user-images.githubusercontent.com/6159178/230761640-ea9db77f-5d0a-4e99-beba-3b804be6ae5f.png">
 
 ## Contributing
 

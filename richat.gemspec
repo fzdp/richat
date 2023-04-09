@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["fzdp01@gmail.com"]
 
   spec.summary       = %q{Richat is a command-line ChatGPT tool}
-  spec.description   = %q{Richat is a command-line ChatGPT tool implemented in Ruby that supports highly customizable configuration. It can save chat logs, performs fuzzy searches on historical inputs, allows for prompt customization and switching at any time}
+  spec.description   = %q{Richat is a command-line ChatGPT tool implemented in Ruby that supports highly customizable configuration. It can save chat contents, performs fuzzy searches on historical inputs, allows for prompt switching at any time and can event act as Linux terminal.}
   spec.homepage      = "https://github.com/fzdp/richat"
   spec.license       = "MIT"
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    richat (0.3.0)
+    richat (0.3.1)
       faraday (~> 2.7)
 
 GEM

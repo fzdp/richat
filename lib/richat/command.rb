@@ -3,12 +3,16 @@ module Richat
     EXIT_CODE = 0
     NEXT_CODE = 1
     PROMPT_CHANGED_CODE = 2
+    SYS_CMD_CODE = 3
+    SYS_CHAT_CODE = 4
 
     class << self
       attr_reader :prompt, :prompt_id
 
-      def call(user_input)
+      def call(user_input, sys_cmd_mode=false)
         user_input = user_input.strip
+        return handle_system_command(user_input, sys_cmd_mode) if user_input.start_with?(*Config.get("sys_cmd", "activate_keywords"))
+
         return unless user_input.start_with?("/")
         if user_input == "/help"
           handle_help
@@ -21,6 +25,21 @@ module Richat
             handle_prompt
           else
             handle_choose_prompt(user_input.split(" ").last)
+          end
+        end
+      end
+
+      def handle_system_command(user_input, sys_cmd_mode)
+        Config.get("sys_cmd", "activate_keywords").each do |sub_str|
+          if user_input.start_with?(sub_str)
+            cmd = user_input[sub_str.length..-1].strip
+            return SYS_CHAT_CODE if Config.get("sys_cmd", "deactivate_keywords").include?(cmd) && sys_cmd_mode
+            system(cmd)
+            if sys_cmd_mode
+              return NEXT_CODE
+            else
+              return SYS_CMD_CODE, sub_str
+            end
           end
         end
       end

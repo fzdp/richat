@@ -1,3 +1,5 @@
+require 'json'
+
 module Richat
   class Config
     DEFAULT_CONFIG = {
@@ -19,6 +21,10 @@ module Richat
         "enable_chat_context" => true,
         "show_welcome_info" => true,
         "shell_history_file" => "~/.richat/history.txt"
+      },
+      "sys_cmd" => {
+        "activate_keywords" => [">", "!"],
+        "deactivate_keywords" => ["q", "quit", "exit"]
       },
       "prompt" => {
         "prompt_dir" => "~/.richat/prompts",

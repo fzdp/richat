@@ -32,7 +32,11 @@ module Richat
           if user_input.start_with?(sub_str)
             cmd = user_input[sub_str.length..-1].strip
             return SYS_CHAT_CODE if Config.get("sys_cmd", "deactivate_keywords").include?(cmd) && sys_cmd_mode
-            system(cmd)
+            if (match = /^cd\s?(.*)$/.match(cmd))
+              Dir.chdir(File.expand_path(match[1].empty? ? "~" : match[1]))
+            else
+              system(cmd)
+            end
             if sys_cmd_mode
               return NEXT_CODE
             else

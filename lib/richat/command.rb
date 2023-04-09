@@ -37,6 +37,7 @@ module Richat
       end
 
       def handle_help
+        puts "Version #{VERSION}"
         puts "\e[32m/exit\e[0m exit Richat"
         puts "\e[32m/config\e[0m show configuration"
         puts "\e[32m/prompt\e[0m show prompt list"

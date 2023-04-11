@@ -56,10 +56,11 @@ module Richat
       end
 
       def kill_process
-        return if @pid.nil? || !process_exist?
+        return if @pid.nil?
         if Gem.win_platform?
-          system("taskkill /F /PID #{@pid}")
+          system("taskkill /F /PID #{@pid}", err: File::NULL)
         else
+          return unless process_exist?
           begin
             Process.kill("TERM", @pid)
           rescue

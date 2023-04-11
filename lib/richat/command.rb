@@ -56,7 +56,7 @@ module Richat
       end
 
       def kill_process
-        return if @pid.nil?
+        return if @pid.nil? || !process_exist?
         if Gem.win_platform?
           system("taskkill /F /PID #{@pid}")
         else
@@ -67,6 +67,15 @@ module Richat
           end
         end
         @pid = nil
+      end
+
+      def process_exist?
+        begin
+          Process.getpgid(@pid)
+          true
+        rescue
+          false
+        end
       end
 
       def handle_config

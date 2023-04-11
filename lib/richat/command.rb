@@ -42,15 +42,31 @@ module Richat
             puts "cd: no such file or directory: #{fp}"
           end
         else
-          system(cmd)
+          @pid = Process.spawn(cmd)
+          Process.wait(@pid)
         end
 
         NEXT_CODE
       end
 
       def handle_exit
-        puts "Bye"
+        kill_process
+        puts "Bye!"
         EXIT_CODE
+      end
+
+      def kill_process
+        return if @pid.nil?
+        if Gem.win_platform?
+          system("taskkill /F /PID #{@pid}")
+        else
+          begin
+            Process.kill("TERM", @pid)
+          rescue
+            nil
+          end
+        end
+        @pid = nil
       end
 
       def handle_config

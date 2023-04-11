@@ -86,7 +86,21 @@ module Richat
 
           puts
         end
-      rescue SignalException, Exception => e
+      rescue Interrupt
+        if sys_cmd_mode
+          Command.kill_process
+          retry
+        else
+          Command.handle_exit
+        end
+      rescue SystemCallError => e
+        puts e.message
+        if sys_cmd_mode
+          retry
+        else
+          Command.handle_exit
+        end
+      rescue Exception => e
         puts e.message
         Command.handle_exit
       end

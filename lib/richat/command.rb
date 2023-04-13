@@ -5,6 +5,7 @@ module Richat
     PROMPT_CHANGED_CODE = 2
     SYS_CMD_CODE = 3
     SYS_CHAT_CODE = 4
+    TOGGLE_CONTEXT_CODE = 5
 
     class << self
       attr_reader :prompt, :prompt_id
@@ -29,6 +30,8 @@ module Richat
             else
               handle_choose_prompt(user_input.split(" ").last)
             end
+          elsif user_input == "/context"
+            handle_toggle_context
           end
         end
       end
@@ -85,11 +88,16 @@ module Richat
         NEXT_CODE
       end
 
+      def handle_toggle_context
+        TOGGLE_CONTEXT_CODE
+      end
+
       def handle_help
         puts "Version #{VERSION}"
         puts "\e[32m/exit\e[0m exit Richat"
         puts "\e[32m/config\e[0m show configuration"
         puts "\e[32m/prompt\e[0m show prompt list"
+        puts "\e[32m/context\e[0m toggle chat context"
         puts "\e[32m/help\e[0m show help info"
         NEXT_CODE
       end
@@ -160,6 +168,10 @@ module Richat
 
       def print_exception(message)
         puts "\e[31m#{message}\e[0m"
+      end
+
+      def print_info(message)
+        puts "\e[32m#{message}\e[0m"
       end
 
       def print_welcome

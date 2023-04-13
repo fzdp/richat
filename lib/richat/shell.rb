@@ -58,6 +58,13 @@ module Richat
             elsif code == Command::SYS_CHAT_CODE
               sys_cmd_mode = false
               next
+            elsif code == Command::TOGGLE_CONTEXT_CODE
+              enable_context_message = !enable_context_message
+              unless enable_context_message
+                context_messages = Command.prompt_id ? [{ role: 'system', content: Command.prompt }] : []
+              end
+              Command.print_info("chat context mode " + (enable_context_message ? "enabled." : "disabled."))
+              next
             end
           end
 

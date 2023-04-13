@@ -40,7 +40,7 @@ There are two ways to configure OpenAI API key
 
 Then run `richat` command to talk with ChatGPT.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/6159178/228755576-5d76a777-f07e-43f6-8141-4f9e19f15372.png">
+<img width="1277" alt="" src="https://user-images.githubusercontent.com/6159178/231799451-5d1e7ef5-8625-45bc-88ed-fa48e0714530.png">
 
 ### Configuration
 
@@ -73,7 +73,8 @@ Configuration file path is /Users/fzdp/.richat/config.json
       "q",
       "quit",
       "exit"
-    ]
+    ],
+    "chat_context_indicator": "💡"
   },
   "sys_cmd": {
     "activate_keywords": [
@@ -183,7 +184,9 @@ Hello! How can I assist you today?
 
 Chat context is enabled by default, because ChatGPT have no memory of past requests, all relevant information must be supplied via the conversation.
 
-You can turn it off in config file.
+You can toggle chat context mode using `/context` command.
+
+<img width="860" alt="" src="https://user-images.githubusercontent.com/6159178/231798747-4a4047f1-4c94-4c63-9984-2283651d4121.png">
 
 ### Linux terminal
 

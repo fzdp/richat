@@ -21,7 +21,8 @@ module Richat
         "enable_chat_context" => true,
         "show_welcome_info" => true,
         "shell_history_file" => "~/.richat/history.txt",
-        "exit_keywords" => ["/exit", "q", "quit", "exit"]
+        "exit_keywords" => ["/exit", "q", "quit", "exit"],
+        "chat_context_indicator" => "💡"
       },
       "sys_cmd" => {
         "activate_keywords" => [">", "!"],

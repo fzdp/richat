@@ -36,7 +36,7 @@ module Richat
       sys_cmd_mode = false
 
       begin
-        while (user_content = Readline.readline(shell_prompt(sys_cmd_mode), true))
+        while (user_content = Readline.readline(shell_prompt(sys_cmd_mode, enable_context_message), true))
           if user_content.empty?
             Readline::HISTORY&.pop
             next
@@ -115,12 +115,19 @@ module Richat
 
     private
 
-    def shell_prompt(sys_cmd_mode)
-      if sys_cmd_mode
-        "\e[32m#{Command.prompt_id&.+" "}\e[0m\e[33m>>\e[0m \e[32m$ \e[0m"
-      else
-        "\e[32m#{Command.prompt_id&.+" "}\e[0m\e[33m>> \e[0m"
+    def shell_prompt(sys_cmd_mode, chat_context_mode)
+      prompt_str = "\e[32m#{Command.prompt_id&.+" "}\e[0m"
+      if chat_context_mode
+        prompt_str += Config.get("shell", "chat_context_indicator")
       end
+
+      if sys_cmd_mode
+        prompt_str += "\e[33m>>\e[0m \e[32m$ \e[0m"
+      else
+        prompt_str += "\e[33m>> \e[0m"
+      end
+
+      prompt_str
     end
   end
 end

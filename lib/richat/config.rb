@@ -22,7 +22,8 @@ module Richat
         "show_welcome_info" => true,
         "shell_history_file" => "~/.richat/history.txt",
         "exit_keywords" => ["/exit", "q", "quit", "exit"],
-        "chat_context_indicator" => "💡"
+        "chat_context_indicator" => "💡",
+        "user_content_color" => "green"
       },
       "sys_cmd" => {
         "activate_keywords" => [">", "!"],

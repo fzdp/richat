@@ -2,7 +2,7 @@ require 'readline'
 
 module Richat
   class Shell
-    attr_reader :chat_client, :logger, :user_role, :ai_role, :system_role, :history_path
+    attr_reader :chat_client, :logger, :user_role, :ai_role, :system_role, :history_path, :user_color
 
     def initialize(options = {})
       @chat_client = options[:chat_client]
@@ -12,6 +12,7 @@ module Richat
       @system_role = Config.get("log", "system_role")
       @history_path = File.expand_path(Config.get("shell", "shell_history_file"))
       File.open(@history_path, 'w') {} unless File.exist?(@history_path)
+      @user_color = ColorCode.get_code(Config.get("shell", "user_content_color"))
     end
 
     def call
@@ -68,6 +69,7 @@ module Richat
             end
           end
 
+          print "\e[0m"
           logger.call(role: user_role, content: user_content)
           response = ''
 
@@ -91,7 +93,7 @@ module Richat
             context_messages.pop
           end
 
-          puts
+          puts "\n\n"
         end
       rescue Interrupt
         if sys_cmd_mode
@@ -124,7 +126,7 @@ module Richat
       if sys_cmd_mode
         prompt_str += "\e[33m>>\e[0m \e[32m$ \e[0m"
       else
-        prompt_str += "\e[33m>> \e[0m"
+        prompt_str += "\e[33m>> \e[0m#{user_color}"
       end
 
       prompt_str

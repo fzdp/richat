@@ -1,5 +1,6 @@
 require "richat/version"
 
+require_relative 'richat/color_code'
 require_relative 'richat/utils'
 require_relative 'richat/config'
 require_relative 'richat/command'

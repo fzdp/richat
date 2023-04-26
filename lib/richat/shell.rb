@@ -66,6 +66,10 @@ module Richat
               end
               Command.print_info("chat context mode " + (enable_context_message ? "enabled." : "disabled."))
               next
+            elsif code == Command::RESET_CONTEXT_CODE
+              context_messages = Command.prompt_id ? [{ role: 'system', content: Command.prompt }] : []
+              Command.print_info("chat context reset.")
+              next
             end
           end
 
